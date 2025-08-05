@@ -503,9 +503,7 @@ class MainActivity : AppCompatActivity(), ActionMode.Callback, AddFragment.Subsc
     }
 
     private fun onSubscriptionItemLongClick(subscription: Subscription) {
-        if (actionMode == null) {
-            beginActionMode(subscription)
-        }
+        // Deletion of subscriptions is disabled; ignore long clicks.
     }
 
     private fun refreshAllSubscriptions() {
@@ -596,13 +594,8 @@ class MainActivity : AppCompatActivity(), ActionMode.Callback, AddFragment.Subsc
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.main_action_mode_delete -> {
-                onMultiDeleteClick()
-                true
-            }
-            else -> false
-        }
+        // No actions; deletion of subscriptions is disabled.
+        return false
     }
 
     private fun onMultiDeleteClick() {
