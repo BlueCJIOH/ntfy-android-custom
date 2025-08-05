@@ -3,7 +3,6 @@ package io.heckel.ntfy.ui
 import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -503,9 +502,7 @@ class MainActivity : AppCompatActivity(), ActionMode.Callback, AddFragment.Subsc
     }
 
     private fun onSubscriptionItemLongClick(subscription: Subscription) {
-        if (actionMode == null) {
-            beginActionMode(subscription)
-        }
+        // Deletion of subscriptions is disabled; ignore long clicks.
     }
 
     private fun refreshAllSubscriptions() {
@@ -596,35 +593,8 @@ class MainActivity : AppCompatActivity(), ActionMode.Callback, AddFragment.Subsc
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.main_action_mode_delete -> {
-                onMultiDeleteClick()
-                true
-            }
-            else -> false
-        }
-    }
-
-    private fun onMultiDeleteClick() {
-        Log.d(DetailActivity.TAG, "Showing multi-delete dialog for selected items")
-
-        val builder = AlertDialog.Builder(this)
-        val dialog = builder
-            .setMessage(R.string.main_action_mode_delete_dialog_message)
-            .setPositiveButton(R.string.main_action_mode_delete_dialog_permanently_delete) { _, _ ->
-                adapter.selected.map { subscriptionId -> viewModel.remove(this, subscriptionId) }
-                finishActionMode()
-            }
-            .setNegativeButton(R.string.main_action_mode_delete_dialog_cancel) { _, _ ->
-                finishActionMode()
-            }
-            .create()
-        dialog.setOnShowListener {
-            dialog
-                .getButton(AlertDialog.BUTTON_POSITIVE)
-                .dangerButton(this)
-        }
-        dialog.show()
+        // No actions; deletion of subscriptions is disabled.
+        return false
     }
 
     override fun onDestroyActionMode(mode: ActionMode?) {
